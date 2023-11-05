@@ -1,0 +1,90 @@
+﻿@model Registration.Models.Data
+
+@{
+    ViewBag.Title = "Regi";
+}
+
+@using (Html.BeginForm("Regi", "Regi", FormMethod.Post, new { name = "myForm", onsubmit = "return validateForm();" }))
+{
+    @Html.ValidationSummary(false, "", new {@class = "text-danger"})
+    <div class="container">
+        <h1>Rejestracja</h1>
+        <hr>
+        <b>
+            <p>Imię: @Html.TextBoxFor(a => a.Firstname, new{type = "text" })</p>
+            <p>Nazwisko: @Html.TextBoxFor(a => a.Lastname, new{type = "text" })</p>
+            <p>Email: @Html.TextBoxFor(a => a.Email, new{type = "text" })</p>
+            <p>Hasło: @Html.TextBoxFor(a => a.Password, new{type = "password" })</p>
+            <p>Powtórz hasło: @Html.TextBoxFor(a => a.ConfirmPassword, new{type = "password" })</p>
+            <p>Podaj swój wiek: @Html.TextBoxFor(a => a.Age, new { @class = "form-control", type = "number" })</p>
+            <p>Numer telefonu (+48): @Html.TextBoxFor(a => a.phoneNumber, new { @class = "Text" })</p>
+            <p>Wybierz swoje miasto: @Html.DropDownListFor(model => model.City, new SelectList(Enum.GetValues(typeof(Data.Cities))), "Wybierz")</p>
+        </b>
+    </div>
+
+    <input type="submit" class="btn" value="Zarejestruj">
+    <input type="reset" class="btn" value="Wyczyść">
+}
+
+<script>
+    function validateForm() {
+        var firstName = document.forms["myForm"]["Firstname"].value;
+        var lastName = document.forms["myForm"]["Lastname"].value;
+        var email = document.forms["myForm"]["Email"].value;
+        var password = document.forms["myForm"]["Password"].value;
+        var confirmPassword = document.forms["myForm"]["ConfirmPassword"].value;
+        var age = document.forms["myForm"]["Age"].value;
+        var city = document.forms["myForm"]["City"].value;
+
+        if (firstName === "") {
+            alert("Proszę wprowadzić imię.");
+            return false;
+        }
+
+        if (lastName === "") {
+            alert("Proszę wprowadzić nazwisko.");
+            return false;
+        }
+
+        if (email === "") {
+            alert("Proszę wprowadzić adres e-mail.");
+            return false;
+        } else if (!isValidEmail(email)) {
+            alert("Proszę wprowadzić poprawny adres e-mail.");
+            return false;
+        }
+
+        if (password === "") {
+            alert("Proszę wprowadzić hasło.");
+            return false;
+        } else if (password.length < 8) {
+            alert("Hasło musi mieć co najmniej 8 znaków.");
+            return false;
+        } else if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password)) {
+            alert("Hasło musi zawierać co najmniej jedną małą literę, jedną dużą literę i jedną cyfrę.");
+            return false;
+        }
+
+        if (confirmPassword !== password) {
+            alert("Potwierdzenie hasła nie jest zgodne z hasłem.");
+            return false;
+        }
+
+        if (age === "" || isNaN(age) || age < 11 || age > 80) {
+            alert("Proszę wprowadzić wiek od 11 do 80 lat.");
+            return false;
+        }
+
+        if (city === "0") {
+            alert("Proszę wybrać miasto.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function isValidEmail(email) {
+        var regex = /^[a-zA-Z0-9._-]+[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/;
+        return regex.test(email);
+    }
+</script>

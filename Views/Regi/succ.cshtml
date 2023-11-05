@@ -1,0 +1,22 @@
+﻿@model Registration.Models.Data
+
+@{
+    ViewData["Title"] = "Rejestracja zakończona pomyślnie";
+}
+
+<h2>Rejestracja zakończona pomyślnie</h2>
+<h1>Wynik</h1>
+Potwierdzam Twoje dane
+<br />
+Imie: @Model.Firstname
+<br />
+Email: @Model.Lastname
+<br />
+Email: @Model.Email
+<br />
+Hasło: @Model.Password
+<br />
+Numer telefonu: +48 @Model.phoneNumber
+<br />
+Miasto: @Model.City
+<br />
